@@ -1,0 +1,51 @@
+Notes - Thread Priorities
+Let us look at how we can change the thread priorities.
+
+Thread priorities range between 1 and 10.
+
+MIN_PRIORITY - 1 being the minimum priority
+
+NORM_PRIORITY - 5 is the normally priority, this is the default priority value.
+
+MAX_PRIORITY - 10 being the max priority.
+
+setPriority(int newPriority)  -
+A method in the Thread class, this is used to set the new priority for the thread. If the newPriority value is more than the maximum priority allowed for the group then maximum priority is considered, i.e. if you try to set 15 then it takes only 10. And for a given ThreadGroup if the maximum allowed priority is 7 then any thread with in that group can have a maximum of 7.
+
+Example -
+Just think about a software installer app, the thread that copies the files should be given more priority than the thread which display the progress etc, that speeds up the installation process. Below example demonstrates setting higher priority for copyThread.
+
+class CopyTask implements Runnable {
+    @Override
+    public void run() {
+	while(true) {
+	    System.out.print("C");
+	}
+    }
+}
+ 
+class ProgressTask implements Runnable {
+    @Override
+    public void run() {
+	while(true) {
+	    System.out.print("-");
+	}
+    }
+}
+ 
+public class Main {
+ 
+    public static void main(String[] args) {
+	CopyTask copyTask = new CopyTask();
+	Thread copyThread = new Thread(copyTask);
+	copyThread.setPriority(Thread.NORM_PRIORITY + 3);
+	copyThread.start();
+		
+	ProgressTask progressTask = new ProgressTask();
+	Thread progressThread = new Thread(progressTask);
+	progressThread.start();
+    }
+}
+Fullscreen
+Go to Previous lecture18. Thread Priorities
+Go to Next lecture20. Internal System Threads and ThreadGroup
